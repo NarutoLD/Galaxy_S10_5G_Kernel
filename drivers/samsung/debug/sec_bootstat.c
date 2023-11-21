@@ -136,13 +136,10 @@ void sec_bootstat_add_initcall(const char *s)
 	}
 }
 
-static DEFINE_RAW_SPINLOCK(ebs_list_lock);
 void sec_enhanced_boot_stat_record(const char *buf)
 {
 	unsigned long long t = 0;
 	struct enhanced_boot_time *entry;
-	unsigned long flags;
-
 	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
 	if (!entry)
 		return;
@@ -152,12 +149,8 @@ void sec_enhanced_boot_stat_record(const char *buf)
 	do_div(t, 1000000);
 	entry->time = (unsigned int)t;
 	sec_bootstat_get_cpuinfo(entry->freq, &entry->online);
-
-	raw_spin_lock_irqsave(&ebs_list_lock, flags);
 	list_add(&entry->next, &enhanced_boot_time_list);
 	events_ebs++;
-
-	raw_spin_unlock_irqrestore(&ebs_list_lock, flags);
 }
 
 static int prev;
@@ -206,7 +199,6 @@ void sec_bootstat_add(const char *c)
 				do_div(t, 1000000);
 				boot_events[i].time = (unsigned int)t;
 				sec_bootstat_get_cpuinfo(boot_events[i].freq, &boot_events[i].online);
-				sec_bootstat_get_thermal(boot_events[i].temp);
 			}
 			// careful check bootcomplete message index 9
 			if(i == 9) {
@@ -375,7 +367,6 @@ static ssize_t store_boot_stat(struct device *dev, struct device_attribute *attr
 		do_div(t, 1000000);
 		boot_events[0].time = (unsigned int)t;
 		sec_bootstat_get_cpuinfo(boot_events[0].freq, &boot_events[0].online);
-		sec_bootstat_get_thermal(boot_events[0].temp);
 	}
 
 	return count;
