@@ -632,6 +632,7 @@ deps_config := \
 	drivers/gpu/ipu-v3/Kconfig \
 	drivers/gpu/host1x/Kconfig \
 	drivers/gpu/vga/Kconfig \
+	drivers/gpu/arm/bv_r38p1/Kconfig \
 	drivers/gpu/arm/exynos/Kconfig \
 	drivers/gpu/arm/bv_r32p1/Kconfig \
 	drivers/gpu/arm/b_r26p0/tests/mali_kutf_clk_rate_trace/kernel/Kconfig \

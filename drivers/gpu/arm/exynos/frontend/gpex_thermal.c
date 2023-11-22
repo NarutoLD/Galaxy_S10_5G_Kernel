@@ -158,14 +158,16 @@ static void gpex_thermal_create_sysfs_file(void)
 /***********************************************************************
  * INIT, TERM FUNCTIONS
  ***********************************************************************/
-int gpex_thermal_init(void)
+int gpex_thermal_init()
 {
 	gpex_thermal_create_sysfs_file();
+
+	gpex_utils_get_exynos_context()->thermal = &thermal;
 
 	return 0;
 }
 
-void gpex_thermal_term(void)
+void gpex_thermal_term()
 {
 	thermal.tmu_enabled = false;
 

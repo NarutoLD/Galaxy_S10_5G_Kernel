@@ -33,7 +33,7 @@
 #include "gpu_dvfs_governor.h"
 #include "gpex_dvfs_internal.h"
 
-struct dvfs_info dvfs;
+static struct dvfs_info dvfs;
 
 static int gpu_dvfs_handler_init(void);
 static int gpu_dvfs_handler_deinit(void);
@@ -172,12 +172,12 @@ static void gpu_dvfs_timer_control(bool timer_state)
 	spin_unlock_irqrestore(&dvfs.spinlock, flags);
 }
 
-void gpex_dvfs_start(void)
+void gpex_dvfs_start()
 {
 	gpu_dvfs_timer_control(true);
 }
 
-void gpex_dvfs_stop(void)
+void gpex_dvfs_stop()
 {
 	gpu_dvfs_timer_control(false);
 }
@@ -220,17 +220,17 @@ static int gpu_dvfs_on_off(bool enable)
 	return 0;
 }
 
-int gpex_dvfs_enable(void)
+int gpex_dvfs_enable()
 {
 	return gpu_dvfs_on_off(true);
 }
 
-int gpex_dvfs_disable(void)
+int gpex_dvfs_disable()
 {
 	return gpu_dvfs_on_off(false);
 }
 
-static int gpu_dvfs_handler_init(void)
+static int gpu_dvfs_handler_init()
 {
 	if (!dvfs.status)
 		dvfs.status = true;
@@ -243,7 +243,7 @@ static int gpu_dvfs_handler_init(void)
 	return 0;
 }
 
-static int gpu_dvfs_handler_deinit(void)
+static int gpu_dvfs_handler_deinit()
 {
 	if (dvfs.status)
 		dvfs.status = false;
@@ -290,10 +290,12 @@ int gpex_dvfs_init(struct device **dev)
 
 	gpex_dvfs_external_init(&dvfs);
 
+	gpex_utils_get_exynos_context()->dvfs = &dvfs;
+
 	return 0;
 }
 
-void gpex_dvfs_term(void)
+void gpex_dvfs_term()
 {
 	/* DVFS stuff */
 	gpu_pm_metrics_term();
@@ -301,7 +303,7 @@ void gpex_dvfs_term(void)
 	dvfs.kbdev = NULL;
 }
 
-int gpex_dvfs_get_status(void)
+int gpex_dvfs_get_status()
 {
 	return dvfs.status;
 }
