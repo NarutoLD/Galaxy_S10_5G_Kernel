@@ -15,14 +15,11 @@ scripts/kconfig/conf  --silentoldconfig Kconfig
   CHK     include/generated/compile.h
   GZIP    kernel/config_data.gz
   CHK     kernel/config_data.h
-<<<<<<< HEAD
-=======
   CC      drivers/gpu/arm/bv_r38p1/../exynos/backend/gpexbe_devicetree.o
   AR      drivers/gpu/arm/bv_r38p1/mali_kbase.o
   AR      drivers/gpu/arm/bv_r38p1/built-in.o
   AR      drivers/gpu/arm/built-in.o
   AR      drivers/gpu/built-in.o
->>>>>>> 74c0715a1a25 (fix_issues_and_start_of_mod_gpu)
   AR      drivers/vision/npu/built-in.o
   AR      drivers/vision/built-in.o
   AR      drivers/built-in.o
@@ -45,17 +42,10 @@ To see full details build your kernel with:
   SORTEX  vmlinux
   SYSMAP  System.map
   FIPS : Generating hmac of crypto and updating vmlinux... 
-<<<<<<< HEAD
-HMAC for "crypto" module is: b'7422d159112cc3ae1a0bdbc63d0a7f6f744945d64b8988022a3f7f3cf1433c14'
-FIPS integrity procedure has been finished for crypto
-  FIPS : Generating hmac of fmp and updating vmlinux... 
-HMAC for "fmp" module is: b'2cab7c9807a58936219c4307f004fe5024b9d9d8c3d5aed34b96056947d8d673'
-=======
 HMAC for "crypto" module is: b'057eda5db2bebbe645e23c0082d9d585a4fb623d074305acc70e09b58d9210b0'
 FIPS integrity procedure has been finished for crypto
   FIPS : Generating hmac of fmp and updating vmlinux... 
 HMAC for "fmp" module is: b'ef72d4a8e1128f590c0e5ca017b41f6333d1dfffff2bae233240da3569a53d61'
->>>>>>> 74c0715a1a25 (fix_issues_and_start_of_mod_gpu)
 FIPS integrity procedure has been finished for fmp
   OBJCOPY arch/arm64/boot/Image
   Building modules, stage 2.
@@ -97,19 +87,8 @@ Using format: AOSP
  
 Done!
 rm: invalid option -- 'b'
+Try 'rm ./-boot-ramdisk.img' to remove the file '-boot-ramdisk.img'.
 Try 'rm --help' for more information.
-<<<<<<< HEAD
-  adding: dtbo.img (deflated 81%)
-  adding: dtb.img (deflated 81%)
-  adding: boot.img (deflated 64%)
-  adding: META-INF/ (stored 0%)
-  adding: META-INF/com/ (stored 0%)
-  adding: META-INF/com/google/ (stored 0%)
-  adding: META-INF/com/google/android/ (stored 0%)
-  adding: META-INF/com/google/android/update-binary (deflated 53%)
-  adding: META-INF/com/google/android/updater-script (deflated 61%)
-Total compile time was 44 seconds
-=======
 updating: dtbo.img (deflated 81%)
 updating: dtb.img (deflated 81%)
 updating: boot.img (deflated 64%)
@@ -120,4 +99,3 @@ updating: META-INF/com/google/android/ (stored 0%)
 updating: META-INF/com/google/android/update-binary (deflated 53%)
 updating: META-INF/com/google/android/updater-script (deflated 61%)
 Total compile time was 55 seconds
->>>>>>> 74c0715a1a25 (fix_issues_and_start_of_mod_gpu)
