@@ -42,11 +42,7 @@ static int gpexbe_devicetree_read_u32(const char *of_string, u32 *of_data)
 
 	ret = of_property_read_u32(dt_info.dev->of_node, of_string, of_data);
 
-	if (ret) {
-		GPU_LOG(MALI_EXYNOS_ERROR,
-			"%s: failed to get item from dt. Data will be set to 0.\n", of_string);
-		*of_data = 0;
-	}
+	GPU_LOG(MALI_EXYNOS_ERROR,"%s: failed to get item from dt. Data will be set to 0. SIKE IT WONT  Btw here is your value %i", of_string, ret);
 
 	return ret;
 }
@@ -62,11 +58,8 @@ static int gpexbe_devicetree_read_string(const char *of_string, const char **of_
 	}
 
 	ret = of_property_read_string(dt_info.dev->of_node, of_string, of_data);
-	if (ret) {
-		GPU_LOG(MALI_EXYNOS_ERROR,
-			"%s: failed to get item from dt. Data will be set to NULL.\n", of_string);
-		*of_data = NULL;
-	}
+
+	GPU_LOG(MALI_EXYNOS_ERROR, "%s: failed to get item from dt. Data will be set to NULL. %i \n", of_string, ret);
 
 	return ret;
 }
@@ -83,8 +76,8 @@ static int gpexbe_devicetree_read_u32_array(const char *of_string, int *of_data,
 	ret = of_property_read_u32_array(dt_info.dev->of_node, of_string, of_data, sz);
 
 	if (ret)
-		GPU_LOG(MALI_EXYNOS_ERROR, "%s: failed to get item from dt (u32 array)\n",
-			of_string);
+		GPU_LOG(MALI_EXYNOS_ERROR, "%s: failed to get item from dt (u32 array) %i \n",
+			of_string, ret);
 
 	return ret;
 }
@@ -269,6 +262,7 @@ static void read_from_dt(void)
 				   &dt_info.gpu_heavy_compute_vk_cpu0_min_clock);
 
 	/* TSG */
+	GPU_LOG(MALI_EXYNOS_ERROR, "TEEESSSTTT %i \n", gpexbe_devicetree_read_u32("gpu_weight_table_idx_0", &dt_info.gpu_weight_table_idx_0));
 	gpexbe_devicetree_read_u32("gpu_weight_table_idx_0", &dt_info.gpu_weight_table_idx_0);
 	gpexbe_devicetree_read_u32("gpu_weight_table_idx_1", &dt_info.gpu_weight_table_idx_1);
 }
