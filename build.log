@@ -6,8 +6,8 @@ arch/arm64/configs/exynos9820-beyondx_defconfig:4287:warning: override: reassign
 scripts/kconfig/conf  --silentoldconfig Kconfig
   CHK     include/config/kernel.release
   CHK     include/generated/uapi/linux/version.h
-  CHK     scripts/mod/devicetable-offsets.h
   CHK     include/generated/utsrelease.h
+  CHK     scripts/mod/devicetable-offsets.h
   CHK     include/generated/timeconst.h
   CHK     include/generated/bounds.h
   CHK     include/generated/asm-offsets.h
@@ -15,13 +15,19 @@ scripts/kconfig/conf  --silentoldconfig Kconfig
   CHK     include/generated/compile.h
   GZIP    kernel/config_data.gz
   CHK     kernel/config_data.h
-  CC      drivers/gpu/arm/bv_r38p1/../exynos/backend/gpexbe_devicetree.o
-  AR      drivers/gpu/arm/bv_r38p1/mali_kbase.o
-  AR      drivers/gpu/arm/bv_r38p1/built-in.o
-  AR      drivers/gpu/arm/built-in.o
-  AR      drivers/gpu/built-in.o
+  CC      drivers/soc/samsung/cal-if/fvmap.o
+drivers/soc/samsung/cal-if/fvmap.c: In function ‘fvmap_copy_from_sram’:
+drivers/soc/samsung/cal-if/fvmap.c:479:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  479 |         if (vclk == NULL)
+      |         ^~
+drivers/soc/samsung/cal-if/fvmap.c:481:13: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  481 |             continue;
+      |             ^~~~~~~~
   AR      drivers/vision/npu/built-in.o
   AR      drivers/vision/built-in.o
+  AR      drivers/soc/samsung/cal-if/built-in.o
+  AR      drivers/soc/samsung/built-in.o
+  AR      drivers/soc/built-in.o
   AR      drivers/built-in.o
   GEN     .version
   CHK     include/generated/compile.h
@@ -42,10 +48,10 @@ To see full details build your kernel with:
   SORTEX  vmlinux
   SYSMAP  System.map
   FIPS : Generating hmac of crypto and updating vmlinux... 
-HMAC for "crypto" module is: b'057eda5db2bebbe645e23c0082d9d585a4fb623d074305acc70e09b58d9210b0'
+HMAC for "crypto" module is: b'0c9ff5edf249672ea15c2ceb426183c91b13dd2926bcbb2d952b55690aca4d91'
 FIPS integrity procedure has been finished for crypto
   FIPS : Generating hmac of fmp and updating vmlinux... 
-HMAC for "fmp" module is: b'ef72d4a8e1128f590c0e5ca017b41f6333d1dfffff2bae233240da3569a53d61'
+HMAC for "fmp" module is: b'97f277876a70ae2a8baace2ec38079612664506328ab01a0f7c92499c6710f8e'
 FIPS integrity procedure has been finished for fmp
   OBJCOPY arch/arm64/boot/Image
   Building modules, stage 2.
@@ -98,4 +104,4 @@ updating: META-INF/com/google/ (stored 0%)
 updating: META-INF/com/google/android/ (stored 0%)
 updating: META-INF/com/google/android/update-binary (deflated 53%)
 updating: META-INF/com/google/android/updater-script (deflated 61%)
-Total compile time was 55 seconds
+Total compile time was 46 seconds

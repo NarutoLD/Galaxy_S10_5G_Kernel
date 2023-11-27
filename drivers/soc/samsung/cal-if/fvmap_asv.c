@@ -42,13 +42,19 @@ static void asv_get_asvinfo(void)
 
 static int get_asv_table(unsigned int *table, unsigned int id)
 {
-	int max_lv = 0;
+    int max_lv = 0;
 
-	if (exynos_cal_asv_ops.get_asv_table)
-		max_lv = exynos_cal_asv_ops.get_asv_table(table, id);
+    if (exynos_cal_asv_ops.get_asv_table) {
+        pr_info("Calling get_asv_table with id: %u\n", id);
+        max_lv = exynos_cal_asv_ops.get_asv_table(table, id);
+        pr_info("get_asv_table returned max_lv: %d\n", max_lv);
+    } else {
+        pr_info("get_asv_table function not available\n");
+    }
 
-	return max_lv;
+    return max_lv;
 }
+
 
 static int asv_rcc_set_table(void)
 {
@@ -62,60 +68,77 @@ static int asv_rcc_set_table(void)
 
 static void asv_voltage_init_table(struct asv_table_list **asv_table, char *name)
 {
-	struct ect_voltage_domain *domain = NULL;
-	struct ect_voltage_table *table = NULL;
-	struct asv_table_entry *asv_entry = NULL;
-	struct ect_margin_domain *margin_domain = NULL;
-	void *asv_block = NULL, *margin_block = NULL;
-	int i =0, j = 0, k = 0;
+    struct ect_voltage_domain *domain = NULL;
+    struct ect_voltage_table *table = NULL;
+    struct asv_table_entry *asv_entry = NULL;
+    struct ect_margin_domain *margin_domain = NULL;
+    void *asv_block = NULL, *margin_block = NULL;
+    int i = 0, j = 0, k = 0;
 
-	asv_block = ect_get_block("ASV");
-	if (asv_block == NULL)
-		return;
+    pr_info("Initializing ASV voltage table for domain: %s\n", name);
 
-	margin_block = ect_get_block("MARGIN");
+    asv_block = ect_get_block("ASV");
+    if (asv_block == NULL) {
+        pr_err("Failed to get ASV block\n");
+        return;
+    }
 
-	domain = ect_asv_get_domain(asv_block, name);
-	if (domain == NULL)
-		return;
+    margin_block = ect_get_block("MARGIN");
 
-	if (margin_block)
-		margin_domain = ect_margin_get_domain(margin_block, name);
+    domain = ect_asv_get_domain(asv_block, name);
+    if (domain == NULL) {
+        pr_err("Failed to get ASV domain for %s\n", name);
+        return;
+    }
 
-	*asv_table = kzalloc(sizeof(struct asv_table_list) * domain->num_of_table, GFP_KERNEL);
-	if (*asv_table == NULL)
-		return;
+    if (margin_block)
+        margin_domain = ect_margin_get_domain(margin_block, name);
 
-	for (i = 0; i < domain->num_of_table; ++i) {
-		table = &domain->table_list[i];
+    *asv_table = kzalloc(sizeof(struct asv_table_list) * domain->num_of_table, GFP_KERNEL);
+    if (*asv_table == NULL) {
+        pr_err("Failed to allocate memory for ASV table list\n");
+        return;
+    }
 
-		(*asv_table)[i].table_size = domain->num_of_table;
-		(*asv_table)[i].table = kzalloc(sizeof(struct asv_table_entry) * domain->num_of_level, GFP_KERNEL);
-		if ((*asv_table)[i].table == NULL)
-			return;
+    for (i = 0; i < domain->num_of_table; ++i) {
+        table = &domain->table_list[i];
 
-		for (j = 0; j < domain->num_of_level; ++j) {
-			asv_entry = &(*asv_table)[i].table[j];
+        pr_info("Initializing ASV voltage table entry %d\n", i);
 
-			asv_entry->index = domain->level_list[j];
-			asv_entry->voltage = kzalloc(sizeof(unsigned int) * domain->num_of_group, GFP_KERNEL);
+        (*asv_table)[i].table_size = domain->num_of_table;
+        (*asv_table)[i].table = kzalloc(sizeof(struct asv_table_entry) * domain->num_of_level, GFP_KERNEL);
+        if ((*asv_table)[i].table == NULL) {
+            pr_err("Failed to allocate memory for ASV table entry %d\n", i);
+            return;
+        }
 
-			for (k = 0; k < domain->num_of_group; ++k) {
-				if (table->voltages != NULL)
-					asv_entry->voltage[k] = table->voltages[j * domain->num_of_group + k];
-				else if (table->voltages_step != NULL)
-					asv_entry->voltage[k] = table->voltages_step[j * domain->num_of_group + k] * table->volt_step;
+        for (j = 0; j < domain->num_of_level; ++j) {
+            asv_entry = &(*asv_table)[i].table[j];
 
-				if (margin_domain != NULL) {
-					if (margin_domain->offset != NULL)
-						asv_entry->voltage[k] += margin_domain->offset[j * margin_domain->num_of_group + k];
-					else
-						asv_entry->voltage[k] += margin_domain->offset_compact[j * margin_domain->num_of_group + k] * margin_domain->volt_step;
-				}
-			}
-		}
-	}
+            asv_entry->index = domain->level_list[j];
+            asv_entry->voltage = kzalloc(sizeof(unsigned int) * domain->num_of_group, GFP_KERNEL);
+
+            for (k = 0; k < domain->num_of_group; ++k) {
+                if (table->voltages != NULL)
+                    asv_entry->voltage[k] = table->voltages[j * domain->num_of_group + k];
+                else if (table->voltages_step != NULL)
+                    asv_entry->voltage[k] = table->voltages_step[j * domain->num_of_group + k] * table->volt_step;
+
+                if (margin_domain != NULL) {
+                    if (margin_domain->offset != NULL)
+                        asv_entry->voltage[k] += margin_domain->offset[j * margin_domain->num_of_group + k];
+                    else
+                        asv_entry->voltage[k] += margin_domain->offset_compact[j * margin_domain->num_of_group + k] * margin_domain->volt_step;
+                }
+
+                pr_info("ASV voltage for entry %d, level %d, group %d: %u\n", i, j, k, asv_entry->voltage[k]);
+            }
+        }
+    }
+
+    pr_info("ASV voltage table initialization for domain %s complete\n", name);
 }
+
 
 static void asv_rcc_init_table(struct asv_table_list **rcc_table, char *name)
 {
@@ -163,11 +186,18 @@ static void asv_rcc_init_table(struct asv_table_list **rcc_table, char *name)
 
 static void asv_voltage_table_init(void)
 {
-	int i = 0;
+    int i = 0;
 
-	for (i = 0; i < NUM_OF_DVFS; i++)
-		asv_voltage_init_table(&(asv_table[i]), dvfs_names[i]);
+    pr_info("Initializing ASV voltage table\n");
+
+    for (i = 0; i < NUM_OF_DVFS; i++) {
+        pr_info("Initializing ASV voltage for %s\n", dvfs_names[i]);
+        asv_voltage_init_table(&(asv_table[i]), dvfs_names[i]);
+    }
+
+    pr_info("ASV voltage table initialization complete\n");
 }
+
 
 static void asv_rcc_table_init(void)
 {
