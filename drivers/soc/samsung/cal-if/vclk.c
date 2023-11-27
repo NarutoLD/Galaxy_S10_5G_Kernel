@@ -295,73 +295,62 @@ int vclk_set_disable(unsigned int id)
 	return ret;
 }
 
-
 unsigned int vclk_get_lv_num(unsigned int id)
 {
-    struct vclk *vclk;
-    int lv_num = 0;
+	struct vclk *vclk;
+	int lv_num = 0;
 
-    vclk = cmucal_get_node(id);
+	vclk = cmucal_get_node(id);
 
-    if (vclk && vclk->lut) {
-        lv_num = vclk->num_rates;
-        pr_info("vclk_get_lv_num: id=%u, lv_num=%d\n", id, lv_num);
-    }
+	if (vclk && vclk->lut)
+		lv_num = vclk->num_rates;
 
-    return lv_num;
+	return lv_num;
+
 }
 
 unsigned int vclk_get_max_freq(unsigned int id)
 {
-    struct vclk *vclk;
-    int rate = 0;
+	struct vclk *vclk;
+	int rate = 0;
 
-    vclk = cmucal_get_node(id);
+	vclk = cmucal_get_node(id);
 
-    if (vclk && vclk->lut) {
-        rate = vclk->max_freq;
-        pr_info("vclk_get_max_freq: id=%u, max_freq=%d\n", id, rate);
-    }
+	if (vclk && vclk->lut)
+		rate = vclk->max_freq;
 
-    return rate;
+	return rate;
 }
 
 unsigned int vclk_get_min_freq(unsigned int id)
 {
-    struct vclk *vclk;
-    int rate = 0;
+	struct vclk *vclk;
+	int rate = 0;
 
-    vclk = cmucal_get_node(id);
+	vclk = cmucal_get_node(id);
 
-    if (vclk && vclk->lut) {
-        rate = vclk->min_freq;
-        pr_info("vclk_get_min_freq: id=%u, min_freq=%d\n", id, rate);
-    }
+	if (vclk && vclk->lut)
+		rate = vclk->min_freq;
 
-    return rate;
+	return rate;
 }
 
 int vclk_get_rate_table(unsigned int id, unsigned long *table)
 {
-    struct vclk *vclk;
-    int i;
-    unsigned int nums = 0;
+	struct vclk *vclk;
+	int i;
+	unsigned int nums = 0;
 
-    vclk = cmucal_get_node(id);
-    if (!vclk || !IS_VCLK(vclk->id)) {
-        pr_err("vclk_get_rate_table: Invalid vclk node for id=%u\n", id);
-        return 0;
-    }
+	vclk = cmucal_get_node(id);
+	if (!vclk || !IS_VCLK(vclk->id))
+		return 0;
+	if (vclk->lut) {
+		for (i = 0; i < vclk->num_rates; i++)
+			table[i] = vclk->lut[i].rate;
+		nums = vclk->num_rates;
+	}
 
-    if (vclk->lut) {
-        for (i = 0; i < vclk->num_rates; i++)
-            table[i] = vclk->lut[i].rate;
-
-        nums = vclk->num_rates;
-        pr_info("vclk_get_rate_table: id=%u, num_rates=%u\n", id, nums);
-    }
-
-    return nums;
+	return nums;
 }
 
 int vclk_get_bigturbo_table(unsigned int *table)
