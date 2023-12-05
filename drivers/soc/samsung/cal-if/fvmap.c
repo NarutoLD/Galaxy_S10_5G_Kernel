@@ -407,6 +407,10 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 	unsigned int blk_idx, param_idx;
 	int size, margin;
 	int i, j, k;
+	
+	// Define your own custom values for rate and volt
+   	int custom_rate_values[] = {754000, 702000, 650000, 598000, 572000, 433000, 377000, 325000, 260000, 200000, 156000, 100000};
+    	int custom_volt_values[] = {681250, 668750, 662500, 656250, 650000, 625000, 612500, 587500, 568750, 568750, 543750, 537500};
 
 	fvmap_header = map_base;
 	header = sram_base;
@@ -483,13 +487,22 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 			else
 				pr_info("  DVFS CMU addr:0x%x\n", member_addr);
 		}
-
-		for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
-			new->table[j].rate = old->table[j].rate;
-			new->table[j].volt = old->table[j].volt;
-			pr_info("  lv : [%7d], volt = %d uV (%d %%) \n",
-				new->table[j].rate, new->table[j].volt,
-				volt_offset_percent);
+		
+		if (strcmp(vclk->name, "dvfs_g3d") == 0) {
+		        for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
+            			// Instead of copying values from old->table[j], you can manually set your own values
+            			// Example: Setting custom values for rate and volt
+            			// You can replace these lines with your own custom logic or values
+            			new->table[j].rate = custom_rate_values[j];  // Replace custom_rate_values with your own array of rates
+            			new->table[j].volt = custom_volt_values[j];  // Replace custom_volt_values with your own array of voltages
+            			pr_info("  lv : [%7d], volt = %d uV (%d %%) \n", new->table[j].rate, new->table[j].volt, volt_offset_percent);
+     			}
+		} else {
+			for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
+				new->table[j].rate = old->table[j].rate;
+				new->table[j].volt = old->table[j].volt;
+				pr_info("  lv : [%7d], volt = %d uV (%d %%) \n", new->table[j].rate, new->table[j].volt, volt_offset_percent);
+			}
 		}
 
 		old_param = sram_base + fvmap_header[i].o_tables;

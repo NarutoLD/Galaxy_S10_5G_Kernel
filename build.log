@@ -6,8 +6,8 @@ arch/arm64/configs/exynos9820-beyondx_defconfig:4287:warning: override: reassign
 scripts/kconfig/conf  --silentoldconfig Kconfig
   CHK     include/config/kernel.release
   CHK     include/generated/uapi/linux/version.h
-  CHK     include/generated/utsrelease.h
   CHK     scripts/mod/devicetable-offsets.h
+  CHK     include/generated/utsrelease.h
   CHK     include/generated/timeconst.h
   CHK     include/generated/bounds.h
   CHK     include/generated/asm-offsets.h
@@ -16,13 +16,30 @@ scripts/kconfig/conf  --silentoldconfig Kconfig
   GZIP    kernel/config_data.gz
   CHK     kernel/config_data.h
   CC      drivers/soc/samsung/cal-if/fvmap.o
-drivers/soc/samsung/cal-if/fvmap.c: In function ‘fvmap_copy_from_sram’:
-drivers/soc/samsung/cal-if/fvmap.c:479:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
-  479 |         if (vclk == NULL)
-      |         ^~
-drivers/soc/samsung/cal-if/fvmap.c:481:13: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
-  481 |             continue;
-      |             ^~~~~~~~
+drivers/soc/samsung/cal-if/fvmap.c: In function ‘fvmap_set_raw_voltage_table’:
+drivers/soc/samsung/cal-if/fvmap.c:238:9: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  238 |         for (i = 0; i < num_of_lv; i++)
+      |         ^~~
+In file included from ./include/linux/kernel.h:14,
+                 from drivers/soc/samsung/cal-if/fvmap.c:2:
+./include/linux/printk.h:316:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  316 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+      |         ^~~~~~
+drivers/soc/samsung/cal-if/fvmap.c:240:17: note: in expansion of macro ‘pr_info’
+  240 |                 pr_info("fvmap_set_raw_voltage_table: Updated voltage for level %d: %d\n", i, fv_table->table[i].volt);
+      |                 ^~~~~~~
+drivers/soc/samsung/cal-if/fvmap.c: In function ‘fvmap_get_voltage_table’:
+drivers/soc/samsung/cal-if/fvmap.c:263:9: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  263 |         for (i = 0; i < num_of_lv; i++)
+      |         ^~~
+In file included from ./include/linux/kernel.h:14,
+                 from drivers/soc/samsung/cal-if/fvmap.c:2:
+./include/linux/printk.h:316:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  316 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+      |         ^~~~~~
+drivers/soc/samsung/cal-if/fvmap.c:265:17: note: in expansion of macro ‘pr_info’
+  265 |                 pr_info("fvmap_get_voltage_table: Voltage for level %d: %u\n", i, table[i]);
+      |                 ^~~~~~~
   AR      drivers/vision/npu/built-in.o
   AR      drivers/vision/built-in.o
   AR      drivers/soc/samsung/cal-if/built-in.o
@@ -48,10 +65,10 @@ To see full details build your kernel with:
   SORTEX  vmlinux
   SYSMAP  System.map
   FIPS : Generating hmac of crypto and updating vmlinux... 
-HMAC for "crypto" module is: b'0c9ff5edf249672ea15c2ceb426183c91b13dd2926bcbb2d952b55690aca4d91'
+HMAC for "crypto" module is: b'981606de27b0dc5ea3c4674f3fd38572e1f5c9b240ee426302e60462b4ce4456'
 FIPS integrity procedure has been finished for crypto
   FIPS : Generating hmac of fmp and updating vmlinux... 
-HMAC for "fmp" module is: b'97f277876a70ae2a8baace2ec38079612664506328ab01a0f7c92499c6710f8e'
+HMAC for "fmp" module is: b'aef92093ee0251224f9bbe0777648d43401e3b7fcf1d5752b4aab1833a860067'
 FIPS integrity procedure has been finished for fmp
   OBJCOPY arch/arm64/boot/Image
   Building modules, stage 2.
@@ -92,16 +109,16 @@ Building image...
 Using format: AOSP
  
 Done!
-rm: invalid option -- 'b'
-Try 'rm ./-boot-ramdisk.img' to remove the file '-boot-ramdisk.img'.
-Try 'rm --help' for more information.
-updating: dtbo.img (deflated 81%)
-updating: dtb.img (deflated 81%)
-updating: boot.img (deflated 64%)
-updating: META-INF/ (stored 0%)
-updating: META-INF/com/ (stored 0%)
-updating: META-INF/com/google/ (stored 0%)
-updating: META-INF/com/google/android/ (stored 0%)
-updating: META-INF/com/google/android/update-binary (deflated 53%)
-updating: META-INF/com/google/android/updater-script (deflated 61%)
-Total compile time was 46 seconds
+rm: Ungültige Option -- b
+Versuchen Sie „rm ./-boot-ramdisk.img“, um die Datei '-boot-ramdisk.img' zu entfernen.
+„rm --help“ liefert weitere Informationen.
+  adding: dtbo.img (deflated 81%)
+  adding: dtb.img (deflated 81%)
+  adding: boot.img (deflated 64%)
+  adding: META-INF/ (stored 0%)
+  adding: META-INF/com/ (stored 0%)
+  adding: META-INF/com/google/ (stored 0%)
+  adding: META-INF/com/google/android/ (stored 0%)
+  adding: META-INF/com/google/android/update-binary (deflated 53%)
+  adding: META-INF/com/google/android/updater-script (deflated 61%)
+Total compile time was 63 seconds
