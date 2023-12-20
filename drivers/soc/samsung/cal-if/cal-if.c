@@ -36,7 +36,18 @@ unsigned int cal_clk_is_enabled(unsigned int id)
 
 unsigned long cal_dfs_get_max_freq(unsigned int id)
 {
-	return vclk_get_max_freq(id);
+    unsigned long maxFreq;
+
+    if(id == 184811530){
+    	maxFreq = 754000;
+    	pr_info("cal_dfs_get_max_freq - ID: %u, Max Frequency: %lu\n", id, maxFreq);
+    } else{
+    	maxFreq = vclk_get_max_freq(id);
+    	pr_info("cal_dfs_get_max_freq - ID: %u, Max Frequency: %lu\n", id, maxFreq);
+    }
+    
+    pr_info("cal_dfs_get_max_freq - ID: %u, Max Frequency: %lu\n", id, maxFreq);
+    return maxFreq;
 }
 
 unsigned long cal_dfs_get_min_freq(unsigned int id)
@@ -348,24 +359,28 @@ void cal_dfs_set_volt_margin(unsigned int id, int volt)
 		exynos_acpm_set_volt_margin(id, volt);
 }
 
-int cal_dfs_get_rate_asv_table(unsigned int id,
-					struct dvfs_rate_volt *table)
+int cal_dfs_get_rate_asv_table(unsigned int id, struct dvfs_rate_volt *table)
 {
 	unsigned long rate[48];
 	unsigned int volt[48];
 	int num_of_entry;
 	int idx;
-
+	unsigned long custom_rate_values[] = {754000, 702000, 650000, 598000, 572000, 433000, 377000, 325000, 260000, 200000, 156000, 100000};
+    	unsigned int custom_volt_values[] = {681250, 668750, 662500, 656250, 650000, 625000, 612500, 587500, 568750, 568750, 543750, 537500};
 	num_of_entry = cal_dfs_get_rate_table(id, rate);
 	if (num_of_entry == 0)
 		return 0;
 
 	if (num_of_entry != cal_dfs_get_asv_table(id, volt))
+	{
 		return 0;
-
+	}
+	
 	for (idx = 0; idx < num_of_entry; idx++) {
-		table[idx].rate = rate[idx];
-		table[idx].volt = volt[idx];
+		table[idx].rate = custom_rate_values[idx];
+		table[idx].volt = custom_volt_values[idx];
+		pr_info("cal_dfs_get_rate_asv_table rate %lu\n", rate[idx]);
+		pr_info("cal_dfs_get_rate_asv_table volt %i\n", volt[idx]);
 	}
 
 	return num_of_entry;

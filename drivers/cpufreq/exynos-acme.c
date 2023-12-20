@@ -1093,11 +1093,14 @@ static __init int init_table(struct exynos_cpufreq_domain *domain)
 
 		/* Undervolt with uV value */
 		volt_table[index] -= cpu_undervolt;
-
-		if (table[index] > domain->max_freq)
+		if (table[index] > domain->max_freq){
 			domain->freq_table[index].frequency = CPUFREQ_ENTRY_INVALID;
-		else if (table[index] < domain->min_freq)
+			pr_info("Frequency %lu exceeds maximum allowed frequency %lu. Setting CPUFREQ_ENTRY_INVALID.\n", table[index], domain->max_freq);
+			}
+		else if (table[index] < domain->min_freq){
 			domain->freq_table[index].frequency = CPUFREQ_ENTRY_INVALID;
+			pr_info("Frequency %lu is below minimum allowed frequency %lu. Setting CPUFREQ_ENTRY_INVALID.\n", table[index], domain->min_freq);
+			}
 		else {
 			struct cpumask mask;
 			domain->freq_table[index].frequency = table[index];

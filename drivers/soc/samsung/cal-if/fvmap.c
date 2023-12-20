@@ -260,9 +260,10 @@ int fvmap_get_voltage_table(unsigned int id, unsigned int *table)
 	fv_table = fvmap_base + fvmap_header[idx].o_ratevolt;
 	num_of_lv = fvmap_header[idx].num_of_lv;
 
-	for (i = 0; i < num_of_lv; i++)
+	for (i = 0; i < num_of_lv; i++){
 		table[i] = fv_table->table[i].volt;
 		pr_info("fvmap_get_voltage_table: Voltage for level %d: %u\n", i, table[i]);
+		}
     	pr_info("fvmap_get_voltage_table: Voltage table retrieved successfully for id=%u\n", id);
 	return num_of_lv;
 
@@ -304,6 +305,10 @@ static void check_percent_margin(struct rate_volt_header *head, unsigned int num
 		org_volt = head->table[i].volt;
 		percent_volt = org_volt * volt_offset_percent / 100;
 		head->table[i].volt = org_volt + rounddown(percent_volt, STEP_UV);
+		pr_info("check_percent_margin org_volt %i\n", org_volt);
+		pr_info("check_percent_margin percent_volt %i\n", percent_volt);
+		pr_info("check_percent_margin head->table[i].volt %i\n", head->table[i].volt);
+		pr_info("check_percent_margin rounddown %i\n", rounddown(percent_volt, STEP_UV));
 	}
 }
 
@@ -448,7 +453,7 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 
 		old = sram_base + fvmap_header[i].o_ratevolt;
 		new = map_base + fvmap_header[i].o_ratevolt;
-   		pr_info("  Copying from address: %p to address: %p\n", (void *)old, (void *)new);
+   		pr_info("Copying from address: %p to address: %p\n", (void *)old, (void *)new);
    		
 		check_percent_margin(old, fvmap_header[i].num_of_lv);
 
@@ -462,8 +467,8 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 			clks = sram_base + fvmap_header[i].o_members;
 			
        			// Debug print to show the clocks address for the current member
-      			pr_info("  Processing clock member %d/%d\n", j + 1, fvmap_header[i].num_of_members);
-        		pr_info("    Clocks address for member %d: %p\n", j, (void *)clks);
+      			pr_info("Processing clock member %d/%d\n", j + 1, fvmap_header[i].num_of_members);
+        		pr_info("Clocks address for member %d: %p\n", j, (void *)clks);
         		
 			if (j < fvmap_header[i].num_of_pll) {
 				plls = sram_base + clks->addr[j];
