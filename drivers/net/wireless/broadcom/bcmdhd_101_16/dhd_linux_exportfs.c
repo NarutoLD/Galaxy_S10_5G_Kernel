@@ -675,9 +675,9 @@ get_assert_val_from_file(void)
 
 	/*
 	 * Read assert info from the file
-	 * 0: Trigger Kernel crash by panic()
+	 * 0: Trigger Kernel crash by panic(void)
 	 * 1: Print out the logs and don't trigger Kernel panic. (default)
-	 * 2: Trigger Kernel crash by BUG()
+	 * 2: Trigger Kernel crash by BUG(void)
 	 * File doesn't exist: Keep default value (1).
 	 */
 	fp = dhd_filp_open(filepath, O_RDONLY, 0);
@@ -2270,7 +2270,7 @@ static struct kobj_attribute hdm_wlan_attr =
 	__ATTR(hdm_wlan_loader, 0660, NULL, hdm_load_module);
 
 void
-dhd_hdm_wlan_sysfs_init()
+dhd_hdm_wlan_sysfs_init(void)
 {
 	DHD_ERROR(("export hdm_wlan_loader\n"));
 	if (sysfs_create_file(kernel_kobj, &hdm_wlan_attr.attr)) {

@@ -635,37 +635,6 @@ deps_config := \
 	drivers/gpu/vga/Kconfig \
 	drivers/gpu/arm/exynos/Kconfig \
 	drivers/gpu/arm/bv_r38p1/Kconfig \
-	drivers/gpu/arm/b_r26p0/tests/mali_kutf_clk_rate_trace/kernel/Kconfig \
-	drivers/gpu/arm/b_r26p0/tests/mali_kutf_irq_test/Kconfig \
-	drivers/gpu/arm/b_r26p0/tests/kutf/Kconfig \
-	drivers/gpu/arm/b_r26p0/tests/Kconfig \
-	drivers/gpu/arm/b_r26p0/platform/exynos/Kconfig \
-	drivers/gpu/arm/b_r26p0/platform/Kconfig \
-	drivers/gpu/arm/b_r26p0/Kconfig \
-	drivers/gpu/arm/b_r19p0/tests/mali_kutf_irq_test/Kconfig \
-	drivers/gpu/arm/b_r19p0/tests/kutf/Kconfig \
-	drivers/gpu/arm/b_r19p0/tests/Kconfig \
-	drivers/gpu/arm/b_r19p0/platform/exynos/Kconfig \
-	drivers/gpu/arm/b_r19p0/platform/Kconfig \
-	drivers/gpu/arm/b_r19p0/Kconfig \
-	drivers/gpu/arm/b_r16p0/tests/mali_kutf_irq_test/Kconfig \
-	drivers/gpu/arm/b_r16p0/tests/kutf/Kconfig \
-	drivers/gpu/arm/b_r16p0/tests/Kconfig \
-	drivers/gpu/arm/b_r16p0/platform/exynos/Kconfig \
-	drivers/gpu/arm/b_r16p0/platform/Kconfig \
-	drivers/gpu/arm/b_r16p0/Kconfig \
-	drivers/gpu/arm/b_r14p0/tests/mali_kutf_irq_test/Kconfig \
-	drivers/gpu/arm/b_r14p0/tests/kutf/Kconfig \
-	drivers/gpu/arm/b_r14p0/tests/Kconfig \
-	drivers/gpu/arm/b_r14p0/platform/exynos/Kconfig \
-	drivers/gpu/arm/b_r14p0/platform/Kconfig \
-	drivers/gpu/arm/b_r14p0/Kconfig \
-	drivers/gpu/arm/b_r12p0/platform/exynos/Kconfig \
-	drivers/gpu/arm/b_r12p0/platform/Kconfig \
-	drivers/gpu/arm/b_r12p0/Kconfig \
-	drivers/gpu/arm/b_r10p0/platform/exynos/Kconfig \
-	drivers/gpu/arm/b_r10p0/platform/Kconfig \
-	drivers/gpu/arm/b_r10p0/Kconfig \
 	drivers/gpu/arm/Kconfig \
 	drivers/char/agp/Kconfig \
 	drivers/video/Kconfig \

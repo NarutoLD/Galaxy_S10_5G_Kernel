@@ -622,7 +622,7 @@ module_param(instance_base, int, 0644);
  * Rx path process budget(dhd_napi_weight) number of packets in one go and hands over
  * the packets to network stack.
  *
- * dhd_dpc tasklet is the producer(packets received from dongle) and dhd_napi_poll()
+ * dhd_dpc tasklet is the producer(packets received from dongle) and dhd_napi_poll(void)
  * is the consumer. The maximum number of packets that can be received from the dongle
  * at any given point of time are D2HRING_RXCMPLT_MAX_ITEM.
  * Also DHD will always post fresh rx buffers to dongle while processing rx completions.
@@ -4289,7 +4289,7 @@ dhd_rx_frame(dhd_pub_t *dhdp, int ifidx, void *pktbuf, int numpkt, uint8 chan)
 				continue;
 		}
 #endif /* DHD_POST_EAPOL_M1_AFTER_ROAM_EVT */
-		/* Get the protocol, maintain skb around eth_type_trans()
+		/* Get the protocol, maintain skb around eth_type_trans(void)
 		 * The main reason for this hack is for the limitation of
 		 * Linux 2.4 where 'eth_type_trans' uses the 'net->hard_header_len'
 		 * to perform skb_pull inside vs ETH_HLEN. Since to avoid
@@ -5274,7 +5274,7 @@ dhd_dpc(ulong data)
 
 	/* this (tasklet) can be scheduled in dhd_sched_dpc[dhd_linux.c]
 	 * down below , wake lock is set,
-	 * the tasklet is initialized in dhd_attach()
+	 * the tasklet is initialized in dhd_attach(void)
 	 */
 	/* Call bus dpc unless it indicated down (then clean stop) */
 	if (dhd->pub.busstate != DHD_BUS_DOWN) {
@@ -6372,7 +6372,7 @@ dhd_ioctl_entry(struct net_device *net, struct ifreq *ifr, int cmd)
 		* some IOVARs in DHD require 32K user memory. So allocate the
 		* maximum local buffer.
 		*
-		* For IOVARS which donot require 32K user memory, dhd_ioctl_process()
+		* For IOVARS which donot require 32K user memory, dhd_ioctl_process(void)
 		* takes care of trimming the length to DHD_IOCTL_MAXLEN(16K). So that DHD
 		* will not overflow the buffer size while updating the buffer.
 		*/
@@ -9569,7 +9569,7 @@ dhd_bus_start(dhd_pub_t *dhdp)
 	}
 #endif /* PCIE_FULL_DONGLE */
 
-	/* set default value for now. Will be updated again in dhd_preinit_ioctls()
+	/* set default value for now. Will be updated again in dhd_preinit_ioctls(void)
 	 * after querying FW
 	 */
 	dhdp->event_log_max_sets = NUM_EVENT_LOG_SETS;
@@ -13880,7 +13880,7 @@ dhd_reboot_callback(struct notifier_block *this, unsigned long code, void *unuse
 
 #if defined(CONFIG_DEFERRED_INITCALLS) && !defined(EXYNOS_PCIE_MODULE_PATCH)
 /* XXX To decrease the device boot time, deferred_module_init() macro can be
- * used. The detailed principle and implemenation of deferred_module_init()
+ * used. The detailed principle and implemenation of deferred_module_init(void)
  * is found at http://elinux.org/Deferred_Initcalls
  * To enable this feature for module build, it needs to add another
  * deferred_module_init() definition to include/linux/init.h in Linux Kernel.
@@ -15019,12 +15019,12 @@ int net_os_rxfilter_add_remove(struct net_device *dev, int add_remove, int num)
 	return ret;
 }
 
-/* XXX RB:4238 Change net_os_set_packet_filter() function name to net_os_enable_packet_filter()
+/* XXX RB:4238 Change net_os_set_packet_filter() function name to net_os_enable_packet_filter(void)
  * previous code do 'set' & 'enable' in one fucntion.
  * but from now on, we are going to separate 'set' and 'enable' feature.
- *  - set : net_os_rxfilter_add_remove() -> dhd_set_packet_filter() -> dhd_pktfilter_offload_set()
- *  - enable : net_os_enable_packet_filter() -> dhd_enable_packet_filter()
- *                                                              -> dhd_pktfilter_offload_enable()
+ *  - set : net_os_rxfilter_add_remove() -> dhd_set_packet_filter() -> dhd_pktfilter_offload_set(void)
+ *  - enable : net_os_enable_packet_filter() -> dhd_enable_packet_filter(void)
+ *                                                              -> dhd_pktfilter_offload_enable(void)
  */
 int dhd_os_enable_packet_filter(dhd_pub_t *dhdp, int val)
 
@@ -19308,7 +19308,7 @@ dhd_nla_put_sssr_dump_len(void *ndev, uint32 *arr_len)
 #endif /* DHD_SSSR_DUMP */
 
 uint32
-dhd_get_time_str_len()
+dhd_get_time_str_len(void)
 {
 	char *ts = NULL, time_str[128];
 

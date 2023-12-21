@@ -326,7 +326,7 @@ static void cpuhp_print_debug_info(struct cpumask online_cpus, int fast_hp)
 
 /*
  * cpuhp_do() is the main function for cpu hotplug. Only this function
- * enables or disables cpus, so all APIs in this driver call cpuhp_do()
+ * enables or disables cpus, so all APIs in this driver call cpuhp_do(void)
  * eventually.
  */
 static int cpuhp_do(int fast_hp)
@@ -393,7 +393,7 @@ static int cpuhp_control(bool enable)
 		ret = cpuhp_in(&mask);
 		if (!ret) {
 			/*
-			 * In this position, can't use cpuhp_enable()
+			 * In this position, can't use cpuhp_enable(void)
 			 * because already taken cpuhp.lock
 			 */
 			cpuhp.enabled = false;
@@ -419,7 +419,7 @@ static int cpuhp_control(bool enable)
  * #echo mask > /sys/power/cpuhp/set_online_cpu
  */
 #define STR_LEN 6
-static inline toupper(char ch)
+static inline int toupper(char ch)
 {
 	if ('a' <= ch && ch <= 'z')
 		ch += 'A' - 'a';
