@@ -1,19 +1,16 @@
 #!/bin/bash
 
-
 export BUILD_CROSS_COMPILE=aarch64-linux-gnu-
 export BUILD_JOB_NUMBER=`grep -c ^processor /proc/cpuinfo`
 RDIR=$(pwd)
 
-
-    KERNEL_DEFCONFIG=exynos9820-beyondx_defconfig
-    SOC=9820
-    BOARD=SRPSC04B011KU
+KERNEL_DEFCONFIG=exynos9820-beyondx_defconfig
+SOC=9820
+BOARD=SRPSC04B011KU
 
 FUNC_BUILD_KERNEL()
 {
     echo " Starting a kernel build using "$KERNEL_DEFCONFIG ""
-    # No this is not a typo, samsung left it this way on 12
     export PLATFORM_VERSION=11
     export ANDROID_MAJOR_VERSION=r
 
@@ -43,7 +40,7 @@ FUNC_BUILD_RAMDISK()
     rm -f $RDIR/ramdisk/split_img/boot.img-kernel
     cp $RDIR/arch/arm64/boot/Image $RDIR/ramdisk/split_img/boot.img-kernel
     echo $BOARD > ramdisk/split_img/boot.img-board
-    # This is kinda ugly hack, we could as well touch .placeholder to all of those
+
     mkdir -p $RDIR/ramdisk/ramdisk/debug_ramdisk
     mkdir -p $RDIR/ramdisk/ramdisk/dev
     mkdir -p $RDIR/ramdisk/ramdisk/mnt
@@ -54,7 +51,6 @@ FUNC_BUILD_RAMDISK()
     rm -rf $RDIR/ramdisk/ramdisk/fstab.exynos9825
 
     cp $RDIR/ramdisk/fstab.exynos$SOC $RDIR/ramdisk/ramdisk/
-
     cd $RDIR/ramdisk/
     ./repackimg.sh --nosudo
 }
