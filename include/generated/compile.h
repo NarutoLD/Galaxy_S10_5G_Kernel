@@ -1,7 +1,7 @@
-/* This file is auto generated, version 78 */
+/* This file is auto generated, version 82 */
 /* SMP PREEMPT */
 #define UTS_MACHINE "aarch64"
-#define UTS_VERSION "#78 SMP PREEMPT Thu Dec 21 21:55:09 CET 2023"
+#define UTS_VERSION "#82 SMP PREEMPT Tue Mar 12 12:25:01 UTC 2024"
 #define LINUX_COMPILE_BY "parallels"
 #define LINUX_COMPILE_HOST "ubuntu-linux-22-04-desktop"
-#define LINUX_COMPILER "Ubuntu clang version 14.0.0-1ubuntu1.1"
+#define LINUX_COMPILER "gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04)"
