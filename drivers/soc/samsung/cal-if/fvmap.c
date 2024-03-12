@@ -233,13 +233,10 @@ int fvmap_set_raw_voltage_table(unsigned int id, int uV)
 	fvmap_header = sram_fvmap_base;
 	fv_table = sram_fvmap_base + fvmap_header[idx].o_ratevolt;
 	num_of_lv = fvmap_header[idx].num_of_lv;
-	pr_info("fvmap_set_raw_voltage_table: Setting raw voltage table for id=%u, uV=%d\n", id, uV);
 
 	for (i = 0; i < num_of_lv; i++)
 		fv_table->table[i].volt += uV;
-		pr_info("fvmap_set_raw_voltage_table: Updated voltage for level %d: %d\n", i, fv_table->table[i].volt);
 		
-	pr_info("fvmap_set_raw_voltage_table: Raw voltage table updated successfully for id=%u\n", id);
 	return 0;
 }
 
@@ -305,10 +302,6 @@ static void check_percent_margin(struct rate_volt_header *head, unsigned int num
 		org_volt = head->table[i].volt;
 		percent_volt = org_volt * volt_offset_percent / 100;
 		head->table[i].volt = org_volt + rounddown(percent_volt, STEP_UV);
-		pr_info("check_percent_margin org_volt %i\n", org_volt);
-		pr_info("check_percent_margin percent_volt %i\n", percent_volt);
-		pr_info("check_percent_margin head->table[i].volt %i\n", head->table[i].volt);
-		pr_info("check_percent_margin rounddown %i\n", rounddown(percent_volt, STEP_UV));
 	}
 }
 
@@ -539,15 +532,12 @@ int fvmap_init(void __iomem *sram_base)
 {
 	void __iomem *map_base;
 	struct kobject *kobj;
-	
-    	pr_info("%s: Initializing fvmap with sram_base=%pK\n", __func__, sram_base);
+
 	map_base = kzalloc(FVMAP_SIZE, GFP_KERNEL);
 
 	fvmap_base = map_base;
 	sram_fvmap_base = sram_base;
-	pr_info("%s:fvmap initialize %pK\n", __func__, sram_base);
 	fvmap_copy_from_sram(map_base, sram_base);
-	pr_info("%s: fvmap initialized with map_base=%pK, sram_fvmap_base=%pK\n", __func__, map_base, sram_base);
 	
 	/* percent margin for each doamin at runtime */
 	kobj = kobject_create_and_add("percent_margin", power_kobj);
