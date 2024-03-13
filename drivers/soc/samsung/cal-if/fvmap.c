@@ -83,8 +83,7 @@ static int __init get_g3d_volt(char *str)
 
 	get_option(&str, &volt);
 	init_margin_table[MARGIN_G3D] = volt;
-	pr_info("get_g3d_volt: MARGIN_G3D set to %d\n", volt);
-
+	
 	return 0;
 }
 early_param("g3d", get_g3d_volt);
@@ -250,7 +249,6 @@ int fvmap_get_voltage_table(unsigned int id, unsigned int *table)
 	if (!IS_ACPM_VCLK(id))
 		return 0;
 		
- 	pr_info("fvmap_get_voltage_table: Getting voltage table for id=%u\n", id);
 	idx = GET_IDX(id);
 
 	fvmap_header = fvmap_base;
@@ -259,11 +257,8 @@ int fvmap_get_voltage_table(unsigned int id, unsigned int *table)
 
 	for (i = 0; i < num_of_lv; i++){
 		table[i] = fv_table->table[i].volt;
-		pr_info("fvmap_get_voltage_table: Voltage for level %d: %u\n", i, table[i]);
 		}
-    	pr_info("fvmap_get_voltage_table: Voltage table retrieved successfully for id=%u\n", id);
 	return num_of_lv;
-
 }
 
 int fvmap_get_raw_voltage_table(unsigned int id)
@@ -282,9 +277,6 @@ int fvmap_get_raw_voltage_table(unsigned int id)
 
 	for (i = 0; i < num_of_lv; i++)
 		table[i] = fv_table->table[i].volt;
-
-	for (i = 0; i < num_of_lv; i++)
-		printk("dvfs id : %d  %d Khz : %d uv\n", ACPM_VCLK_TYPE | id, fv_table->table[i].rate, table[i]);
 
 	return 0;
 }
@@ -406,15 +398,12 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 	int size, margin;
 	int i, j, k;
 	
-	// Define your own custom values for rate and volt
    	int custom_rate_values[] = {754000, 702000, 650000, 598000, 572000, 433000, 377000, 325000, 260000, 200000, 156000, 100000};
     	int custom_volt_values[] = {681250, 668750, 662500, 656250, 650000, 625000, 612500, 587500, 568750, 568750, 543750, 537500};
 
 	fvmap_header = map_base;
 	header = sram_base;
-
 	size = cmucal_get_list_size(ACPM_VCLK_TYPE);
-	pr_info("getting table size %i\n", size);
 
 	for (i = 0; i < size; i++) {
 		/* load fvmap info */
@@ -439,19 +428,10 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 		vclk = cmucal_get_node(ACPM_VCLK_TYPE | i);
 		if (vclk == NULL)
 			continue;
-		pr_info("dvfs_type : %s - id : %x\n",
-			vclk->name, fvmap_header[i].dvfs_type);
-		pr_info("  num_of_lv      : %d\n", fvmap_header[i].num_of_lv);
-		pr_info("  num_of_members : %d\n", fvmap_header[i].num_of_members);
-
 		old = sram_base + fvmap_header[i].o_ratevolt;
 		new = map_base + fvmap_header[i].o_ratevolt;
-   		pr_info("Copying from address: %p to address: %p\n", (void *)old, (void *)new);
-   		
 		check_percent_margin(old, fvmap_header[i].num_of_lv);
-
 		margin = init_margin_table[vclk->margin_id];
-		pr_info("Margin for dvfs_type %x: %d\n", fvmap_header[i].dvfs_type, margin);
 		
 		if (margin)
 			cal_dfs_set_volt_margin(i | ACPM_VCLK_TYPE, margin);
@@ -488,9 +468,6 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 		
 		if (strcmp(vclk->name, "dvfs_g3d") == 0) {
 		        for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
-            			// Instead of copying values from old->table[j], you can manually set your own values
-            			// Example: Setting custom values for rate and volt
-            			// You can replace these lines with your own custom logic or values
             			new->table[j].rate = custom_rate_values[j];  // Replace custom_rate_values with your own array of rates
             			new->table[j].volt = custom_volt_values[j];  // Replace custom_volt_values with your own array of voltages
             			pr_info("  lv : [%7d], volt = %d uV (%d %%) \n", new->table[j].rate, new->table[j].volt, volt_offset_percent);
@@ -505,23 +482,12 @@ static void fvmap_copy_from_sram(void __iomem *map_base, void __iomem *sram_base
 
 		old_param = sram_base + fvmap_header[i].o_tables;
 		new_param = map_base + fvmap_header[i].o_tables;
-		
-		pr_info("Copying parameter data for dvfs_type %x\n", fvmap_header[i].dvfs_type);
-    		// Debug print to show the addresses being used for copying parameters
-   		pr_info("  Copying parameters from address: %p to address: %p\n", (void *)old_param, (void *)new_param);
-   	
 		for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
-		        pr_info("Copying parameters for lv %d\n", j);
 			for (k = 0; k < fvmap_header[i].num_of_members; k++) {
 				param_idx = fvmap_header[i].num_of_members * j + k;
 				new_param->val[param_idx] = old_param->val[param_idx];
-				pr_info("Copied parameter for member %d: %d\n", k, new_param->val[param_idx]);
 				if (vclk->lut[j].params[k] != new_param->val[param_idx]) {
 					vclk->lut[j].params[k] = new_param->val[param_idx];
-					pr_info("Mis-match %s[%d][%d] : %d %d\n",
-						vclk->name, j, k,
-						vclk->lut[j].params[k],
-						new_param->val[param_idx]);
 				}
 			}
 		}

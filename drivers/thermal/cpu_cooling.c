@@ -162,24 +162,8 @@ static int cpufreq_thermal_notifier(struct notifier_block *nb,
 
 	mutex_lock(&cooling_list_lock);
 	list_for_each_entry(cpufreq_cdev, &cpufreq_cdev_list, node) {
-		/*
-		 * A new copy of the policy is sent to the notifier and can't
-		 * compare that directly.
-		 */
 		if (policy->cpu != cpufreq_cdev->policy->cpu)
 			continue;
-
-		/*
-		 * policy->max is the maximum allowed frequency defined by user
-		 * and clipped_freq is the maximum that thermal constraints
-		 * allow.
-		 *
-		 * If clipped_freq is lower than policy->max, then we need to
-		 * readjust policy->max.
-		 *
-		 * But, if clipped_freq is greater than policy->max, we don't
-		 * need to do anything.
-		 */
 		clipped_freq = cpufreq_cdev->clipped_freq;
 
 		if (policy->max > clipped_freq) {
@@ -187,6 +171,7 @@ static int cpufreq_thermal_notifier(struct notifier_block *nb,
 			dbg_snapshot_thermal(NULL, 0, cpufreq_cdev->cdev->type, clipped_freq);
 		}
 		break;
+		
 	}
 	mutex_unlock(&cooling_list_lock);
 
