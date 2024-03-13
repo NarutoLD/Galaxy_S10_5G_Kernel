@@ -1,0 +1,34 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "oneui5_beyond" ]
+  pull_request:
+    branches: [ "oneui5_beyond" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: configure
+      run: sudo apt-get install build-essential libncurses-dev libtinfo5 bc bison flex libssl-dev libelf-dev heimdall-flash android-tools-adb android-tools-fastboot curl p7zip-full gcc g++
+      
+    - name: Install avbtool
+      run: make
+      
+    - name: Install mkbootimg
+      run: make check
+      
+    - name: Install mkdtboimg
+      run: make distcheck
+      
+    - name: Get the sources
+      run: git clone https://github.com/Creeeeger/Galaxy_S10_5G_Kernel && cd Galaxy_S10_5G_Kernel
+      
+    - name: Build
+      run: bash build.sh
+      
+    - name: Upload
+      run: make distcheck
