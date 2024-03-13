@@ -1,18 +1,52 @@
-Linux kernel
-============
+# Crecker Kernel for Samsung Galaxy :
+# S10 5G
 
-This file was moved to Documentation/admin-guide/README.rst
+Based on samsung sources and android common tree and the modified verison of ivan meler
+Supported devices:
+G977B
 
-Please notice that there are several guides for kernel developers and users.
-These guides can be rendered in a number of formats, like HTML and PDF.
+OneUI 4 and 5
 
-In order to build the documentation, use ``make htmldocs`` or
-``make pdfdocs``.
+## How to install
 
-There are various text files in the Documentation/ subdirectory,
-several of them using the Restructured Text markup notation.
-See Documentation/00-INDEX for a list of what is contained in each file.
+Backup your existing kernel. You will be able to restore it from TWRP Recovery in case of problems.
+Then flash the zip package and the magisk zip.
+Clean cache and reboot.
 
-Please read the Documentation/process/changes.rst file, as it contains the
-requirements for building and running the kernel, and information about
-the problems which may result by upgrading your kernel.
+----------------------------------------------------------------------------------------
+## DESCRIPTION FROM CRUEL KERNEL - thx to the Cruel Kernel Team
+----------------------------------------------------------------------------------------
+
+## How to build the kernel locally on your PC
+
+This instructions assumes you are using Linux. Install heimdall if you want to flash the
+kernel automatically.
+
+Next:
+```sh
+# Install prerequisites
+$ sudo apt-get install build-essential libncurses-dev libtinfo5 bc bison flex libssl-dev libelf-dev heimdall-flash android-tools-adb android-tools-fastboot curl p7zip-full gcc g++
+
+# Install avbtool
+$ wget -q https://android.googlesource.com/platform/external/avb/+archive/refs/heads/master.tar.gz -O - | tar xzf - avbtool.py
+$ chmod +x avbtool.py
+$ sudo mv avbtool.py /usr/local/bin/avbtool
+
+# Install mkbootimg
+$ wget -q https://android.googlesource.com/platform/system/tools/mkbootimg/+archive/refs/heads/master.tar.gz -O - | tar xzf - mkbootimg.py gki
+$ chmod +x mkbootimg.py
+$ sudo mv mkbootimg.py /usr/local/bin/mkbootimg
+$ sudo mv gki $(python -c 'import site; print(site.getsitepackages()[0])')
+
+# Install mkdtboimg
+$ wget -q https://android.googlesource.com/platform/system/libufdt/+archive/refs/heads/master.tar.gz -O - | tar --strip-components 2 -xzf - utils/src/mkdtboimg.py
+$ chmod +x mkdtboimg.py
+$ sudo mv mkdtboimg.py /usr/local/bin/mkdtboimg
+
+# Get the sources
+$ git clone https://github.com/Creeeeger/Galaxy_S10_5G_Kernel
+$ cd Galaxy_S10_5G_Kernel
+
+$ bash build.sh
+```
+----------------------------------------------------------------------------------------

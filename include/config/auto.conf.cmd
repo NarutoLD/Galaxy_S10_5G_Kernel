@@ -133,13 +133,10 @@ deps_config := \
 	drivers/firmware/broadcom/Kconfig \
 	drivers/firmware/Kconfig \
 	drivers/spu_verify/Kconfig \
-	drivers/security/samsung/tzic/Kconfig \
 	drivers/kperfmon/Kconfig \
 	drivers/samsung/misc/Kconfig \
 	drivers/samsung/debug/Kconfig \
 	drivers/samsung/Kconfig \
-	drivers/security/samsung/icdrv/Kconfig \
-	drivers/security/samsung/five_tee_driver/Kconfig \
 	drivers/fingerprint/Kconfig \
 	drivers/motor/Kconfig \
 	drivers/optics/Kconfig \
