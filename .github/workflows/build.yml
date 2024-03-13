@@ -28,7 +28,7 @@ jobs:
       run: git clone https://github.com/Creeeeger/Galaxy_S10_5G_Kernel && cd Galaxy_S10_5G_Kernel
       
     - name: Build
-      run: bash build.sh
+      run: bash build_online.sh
       
     - name: Upload
       uses: actions/upload-artifact@v2
