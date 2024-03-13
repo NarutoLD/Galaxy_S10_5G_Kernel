@@ -1,9 +1,6 @@
-# Crecker Kernel for Samsung Galaxy :
-# S10 5G
+# Crecker Kernel for Samsung Galaxy : S10 5G (G977B)
 
-Based on samsung sources and android common tree and the modified verison of ivan meler
-Supported devices:
-G977B
+Based on samsung sources and android common tree and the modified verison of Ivan meler
 
 OneUI 4 and 5
 
@@ -13,16 +10,8 @@ Backup your existing kernel. You will be able to restore it from TWRP Recovery i
 Then flash the zip package and the magisk zip.
 Clean cache and reboot.
 
-----------------------------------------------------------------------------------------
-## DESCRIPTION FROM CRUEL KERNEL - thx to the Cruel Kernel Team
-----------------------------------------------------------------------------------------
+## How to build the kernel on your PC
 
-## How to build the kernel locally on your PC
-
-This instructions assumes you are using Linux. Install heimdall if you want to flash the
-kernel automatically.
-
-Next:
 ```sh
 # Install prerequisites
 $ sudo apt-get install build-essential libncurses-dev libtinfo5 bc bison flex libssl-dev libelf-dev heimdall-flash android-tools-adb android-tools-fastboot curl p7zip-full gcc g++
