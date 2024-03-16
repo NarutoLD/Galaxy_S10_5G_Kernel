@@ -16,7 +16,9 @@
 
 #include <linux/uaccess.h>
 
-
+int futex_cmpxchg_enabled;
+#define futex_cmpxchg_enabled 1
+int handle_futex_death(u32 __user *uaddr, struct task_struct *curr, int pi);
 /*
  * Fetch a robust-list pointer. Bit 0 signals PI futexes:
  */
