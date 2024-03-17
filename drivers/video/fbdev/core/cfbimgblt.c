@@ -1,39 +1,3 @@
-/*
- *  Generic BitBLT function for frame buffer with packed pixels of any depth.
- *
- *      Copyright (C)  June 1999 James Simmons
- *
- *  This file is subject to the terms and conditions of the GNU General Public
- *  License.  See the file COPYING in the main directory of this archive for
- *  more details.
- *
- * NOTES:
- *
- *    This function copys a image from system memory to video memory. The
- *  image can be a bitmap where each 0 represents the background color and
- *  each 1 represents the foreground color. Great for font handling. It can
- *  also be a color image. This is determined by image_depth. The color image
- *  must be laid out exactly in the same format as the framebuffer. Yes I know
- *  their are cards with hardware that coverts images of various depths to the
- *  framebuffer depth. But not every card has this. All images must be rounded
- *  up to the nearest byte. For example a bitmap 12 bits wide must be two 
- *  bytes width. 
- *
- *  Tony: 
- *  Incorporate mask tables similar to fbcon-cfb*.c in 2.4 API.  This speeds 
- *  up the code significantly.
- *  
- *  Code for depths not multiples of BITS_PER_LONG is still kludgy, which is
- *  still processed a bit at a time.   
- *
- *  Also need to add code to deal with cards endians that are different than
- *  the native cpu endians. I also need to deal with MSB position in the word.
- *  Modified by Harm Hanemaaijer (fgenfb@yahoo.com) 2013:
- *  - Provide optimized versions of fast_imageblit for 16 and 32bpp that are
- *    significantly faster than the previous implementation.
- *  - Simplify the fast/slow_imageblit selection code, avoiding integer
- *    divides.
- */
 #include <linux/module.h>
 #include <linux/string.h>
 #include <linux/fb.h>
