@@ -2104,8 +2104,6 @@ static inline int vma_adjust(struct vm_area_struct *vma, unsigned long start,
 {
 	return __vma_adjust(vma, start, end, pgoff, insert, NULL);
 }
-unsigned long randomize_page(unsigned long start, unsigned long range);
-
 extern struct vm_area_struct *vma_merge(struct mm_struct *,
 	struct vm_area_struct *prev, unsigned long addr, unsigned long end,
 	unsigned long vm_flags, struct anon_vma *, struct file *, pgoff_t,
