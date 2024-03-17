@@ -29,7 +29,6 @@ void set_ucc(int enable)
 	mutex_lock(&input_lock);
 
 	if (enable != current_ucc_boost) {
-		pr_booster("[Input Booster2] ******      set_ucc : %d ( %s )\n", enable, __FUNCTION__);
 		if (enable) {
 			ucc_add_request(&ucc_req, enable);
 		} else {
@@ -47,7 +46,6 @@ void set_hmp(int enable)
 	mutex_lock(&input_lock);
 
 	if (enable != current_hmp_boost) {
-		pr_booster("[Input Booster2] ******      set_ehmp : %d ( %s )\n", enable, __FUNCTION__);
 		if (enable) {
 			kpp_request(STUNE_TOPAPP, &kpp_ta, enable);
 			kpp_request(STUNE_FOREGROUND, &kpp_fg, enable);
@@ -67,7 +65,6 @@ void ib_set_booster(int *qos_values)
 	int res_type = 0;
 
 	for (res_type = 0; res_type < MAX_RES_COUNT; res_type++) {
-		pr_info(" ib_set_booster qos_values[%d] : %d", res_type, qos_values[res_type]);
 		value = qos_values[res_type];
 
 		if (value <= 0)
@@ -89,7 +86,6 @@ void ib_release_booster(int res_id)
 		informations[res_id].set_func(informations[res_id].release_value);
 	}
 
-	pr_info("ib_release_booster %d value : %d", res_id, informations[res_id].release_value);
 }
 
 void input_booster_init_vendor(int *release_val)
