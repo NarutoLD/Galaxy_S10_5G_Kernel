@@ -10,6 +10,11 @@ Backup your existing kernel. You will be able to restore it from TWRP Recovery i
 Then flash the zip package and the magisk zip.
 Clean cache and reboot.
 
+## GLORIFICATION
+
+Geekbench Single core 1010 - 1022
+Geekbench Multi core 2601
+
 ## How to build the kernel on your PC
 
 ```sh
