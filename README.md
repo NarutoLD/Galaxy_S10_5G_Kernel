@@ -12,8 +12,8 @@ Clean cache and reboot.
 
 ## GLORIFICATION
 
-Geekbench Single core 1010 - 1022
-Geekbench Multi core 2601
+Geekbench Single core 	original: 867 	mine: 1025 --> exynos 990 Level
+Geekbench Multi core 	original: 2162 	mine: 2601 --> Snapdragon 855 Level
 
 ## How to build the kernel on your PC
 
