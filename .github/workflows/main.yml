@@ -1,0 +1,33 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: configure
+      run: sudo apt-get install build-essential libncurses-dev libtinfo5 bc bison flex libssl-dev libelf-dev heimdall-flash android-tools-adb android-tools-fastboot curl p7zip-full gcc g++
+      
+    - name: Install avbtool
+      run: wget -q https://android.googlesource.com/platform/external/avb/+archive/refs/heads/master.tar.gz -O - | tar xzf - avbtool.py && chmod +x avbtool.py && sudo mv avbtool.py /usr/local/bin/avbtool
+      
+    - name: Install mkbootimg
+      run: wget -q https://android.googlesource.com/platform/system/tools/mkbootimg/+archive/refs/heads/master.tar.gz -O - | tar xzf - mkbootimg.py gki && chmod +x mkbootimg.py && sudo mv mkbootimg.py /usr/local/bin/mkbootimg && sudo mv gki $(python -c 'import site; print(site.getsitepackages()[0])')
+
+    - name: Install mkdtboimg
+      run: wget -q https://android.googlesource.com/platform/system/libufdt/+archive/refs/heads/master.tar.gz -O - | tar --strip-components 2 -xzf - utils/src/mkdtboimg.py && chmod +x mkdtboimg.py && sudo mv mkdtboimg.py /usr/local/bin/mkdtboimg
+      
+    - name: Get the sources
+      run: git clone https://github.com/Creeeeger/Galaxy_S10_5G_Kernel && cd Galaxy_S10_5G_Kernel
+      
+    - name: Build
+      run: bash build.sh
+      
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+          path: 'build/*.zip'
+          if-no-files-found: error
