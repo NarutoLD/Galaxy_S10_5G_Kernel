@@ -771,6 +771,21 @@ out:
 	kfree(n);
 	kfree(t);
 
+// [ SEC_SELINUX_PORTING_COMMON
+#ifdef CONFIG_SECURITY_SELINUX_ALWAYS_ENFORCE
+#if (defined CONFIG_KDP_CRED && defined CONFIG_SAMSUNG_PRODUCT_SHIP)
+	enforcing_set(NULL, 1);
+#else
+	selinux_enforcing = 1;
+#endif
+#elif defined(CONFIG_SECURITY_SELINUX_ALWAYS_PERMISSIVE)
+#if (defined CONFIG_KDP_CRED && defined CONFIG_SAMSUNG_PRODUCT_SHIP)
+	enforcing_set(NULL, 0);
+#else
+	selinux_enforcing = 0;
+#endif
+#endif
+// ] SEC_SELINUX_PORTING_COMMON
 	if (!selinux_enforcing)
 		return 0;
 	return -EPERM;
@@ -1555,6 +1570,21 @@ out:
 	kfree(t);
 	kfree(n);
 
+// [ SEC_SELINUX_PORTING_COMMON
+#ifdef CONFIG_SECURITY_SELINUX_ALWAYS_ENFORCE
+#if (defined CONFIG_KDP_CRED && defined CONFIG_SAMSUNG_PRODUCT_SHIP)
+	enforcing_set(NULL, 1);
+#else
+	selinux_enforcing = 1;
+#endif
+#elif defined(CONFIG_SECURITY_SELINUX_ALWAYS_PERMISSIVE)
+#if (defined CONFIG_KDP_CRED && defined CONFIG_SAMSUNG_PRODUCT_SHIP)
+	enforcing_set(NULL, 0);
+#else
+	selinux_enforcing = 0;
+#endif
+#endif
+// ] SEC_SELINUX_PORTING_COMMON
 	if (!selinux_enforcing)
 		return 0;
 	return -EACCES;
@@ -1846,6 +1876,23 @@ static inline int convert_context_handle_invalid_context(struct context *context
 	char *s;
 	u32 len;
 
+// [ SEC_SELINUX_PORTING_COMMON 
+#ifdef CONFIG_SECURITY_SELINUX_ALWAYS_ENFORCE
+#if (defined CONFIG_KDP_CRED && defined CONFIG_SAMSUNG_PRODUCT_SHIP)
+	enforcing_set(NULL, 1);
+#else
+	selinux_enforcing = 1;
+#endif
+#elif defined(CONFIG_SECURITY_SELINUX_ALWAYS_PERMISSIVE)
+#if (defined CONFIG_KDP_CRED && defined CONFIG_SAMSUNG_PRODUCT_SHIP)
+	enforcing_set(NULL, 0);
+#else
+	selinux_enforcing = 0;
+#endif
+#endif
+	if (!selinux_enforcing) // SEC_SELINUX_PORTING_COMMON Change to use RKP
+		return -EINVAL;
+// ] SEC_SELINUX_PORTING_COMMON
 	if (selinux_enforcing)
 		return -EINVAL;
 
