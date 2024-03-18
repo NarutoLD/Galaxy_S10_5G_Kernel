@@ -1,10 +1,9 @@
 #!/bin/bash
 
-export MODEL=$1
 export BUILD_CROSS_COMPILE=$(pwd)/toolchains/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 export BUILD_JOB_NUMBER=`grep -c ^processor /proc/cpuinfo`
 RDIR=$(pwd)
-
+:'
 case $MODEL in
 beyond2lte)
     KERNEL_DEFCONFIG=exynos9820-beyond2lte_defconfig
@@ -52,7 +51,15 @@ d2x)
     SOC=9820
     BOARD=SRPRI17C014KU
 esac
+'
 
+#Select your model here (I set it to beyondx since i have one) so demand change it to yours
+MODEL=beyondx
+export MODEL=beyondx
+KERNEL_DEFCONFIG=exynos9820-beyondx_defconfig
+SOC=9820
+BOARD=SRPSC04B011KU
+    
 FUNC_BUILD_KERNEL()
 {
     echo " Starting a kernel build using "$KERNEL_DEFCONFIG ""
