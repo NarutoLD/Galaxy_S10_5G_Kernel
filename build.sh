@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#export BUILD_CROSS_COMPILE=$(pwd)/toolchains/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
-export BUILD_CROSS_COMPILE=clang
+export BUILD_CROSS_COMPILE=$(pwd)/toolchains/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 export BUILD_JOB_NUMBER=`grep -c ^processor /proc/cpuinfo`
 RDIR=$(pwd)
 :'
