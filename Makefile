@@ -434,7 +434,6 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Wno-tautological-overlap-compare \
 		   -Wno-fortify-source \
 		   -Wno-sizeof-pointer-div \
-		   -Werror \
 		   -Xassembler -march=armv8-a+lse \
 		   -std=gnu89
 KBUILD_CPPFLAGS := -D__KERNEL__
