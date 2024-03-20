@@ -25,7 +25,7 @@ FUNC_BUILD_KERNEL()
     make -j$BUILD_JOB_NUMBER ARCH=arm64 \
         CROSS_COMPILE=$BUILD_CROSS_COMPILE || exit -1
 
-    $RDIR/toolchains/mkdtimg cfg_create build/dtb_$SOC.img \
+    mkdtboimg cfg_create build/dtb_$SOC.img \
         $RDIR/toolchains/configs/exynos$SOC.cfg \
         -d $RDIR/arch/arm64/boot/dts/exynos
 
@@ -34,7 +34,7 @@ FUNC_BUILD_KERNEL()
 
 FUNC_BUILD_DTBO()
 {
-    $RDIR/toolchains/mkdtimg cfg_create build/dtbo_$MODEL.img \
+	mkdtboimg cfg_create build/dtbo_$MODEL.img \
         $RDIR/toolchains/configs/$MODEL.cfg \
         -d $RDIR/arch/arm64/boot/dts/samsung
 }
