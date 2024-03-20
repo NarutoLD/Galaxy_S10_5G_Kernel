@@ -471,7 +471,11 @@ static int __init init_sdcardfs_fs(void)
 {
 	int err;
 
-	pr_info("Registering sdcardfs " SDCARDFS_VERSION "\n");
+	kmem_file_info_pool = KMEM_CACHE(sdcardfs_file_info, SLAB_HWCACHE_ALIGN);
+	if (!kmem_file_info_pool) {
+		err = -ENOMEM;
+		goto err;
+	}
 
 	err = sdcardfs_init_inode_cache();
 	if (err)
@@ -489,6 +493,7 @@ out:
 		sdcardfs_destroy_dentry_cache();
 		packagelist_exit();
 	}
+err:
 	return err;
 }
 

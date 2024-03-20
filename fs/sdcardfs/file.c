@@ -1,27 +1,9 @@
-/*
- * fs/sdcardfs/file.c
- *
- * Copyright (c) 2013 Samsung Electronics Co. Ltd
- *   Authors: Daeho Jeong, Woojoong Lee, Seunghwan Hyun,
- *               Sunghwan Yun, Sungjong Seo
- *
- * This program has been developed as a stackable file system based on
- * the WrapFS which written by
- *
- * Copyright (c) 1998-2011 Erez Zadok
- * Copyright (c) 2009     Shrikar Archak
- * Copyright (c) 2003-2011 Stony Brook University
- * Copyright (c) 2003-2011 The Research Foundation of SUNY
- *
- * This file is dual licensed.  It may be redistributed and/or modified
- * under the terms of the Apache 2.0 License OR version 2 of the GNU
- * General Public License.
- */
-
 #include "sdcardfs.h"
 #ifdef CONFIG_SDCARD_FS_FADV_NOACTIVE
 #include <linux/backing-dev.h>
 #endif
+
+struct kmem_cache *kmem_file_info_pool;
 
 static ssize_t sdcardfs_read(struct file *file, char __user *buf,
 			   size_t count, loff_t *ppos)
@@ -256,7 +238,7 @@ static int sdcardfs_open(struct inode *inode, struct file *file)
 	}
 
 	file->private_data =
-		kzalloc(sizeof(struct sdcardfs_file_info), GFP_KERNEL);
+		kmem_cache_zalloc(kmem_file_info_pool, GFP_KERNEL);
 	if (!SDCARDFS_F(file)) {
 		err = -ENOMEM;
 		goto out_revert_cred;
@@ -278,7 +260,7 @@ static int sdcardfs_open(struct inode *inode, struct file *file)
 	}
 
 	if (err)
-		kfree(SDCARDFS_F(file));
+		kmem_cache_free(kmem_file_info_pool, SDCARDFS_F(file));
 	else
 		sdcardfs_copy_and_fix_attrs(inode, sdcardfs_lower_inode(inode));
 
@@ -314,7 +296,7 @@ static int sdcardfs_file_release(struct inode *inode, struct file *file)
 		fput(lower_file);
 	}
 
-	kfree(SDCARDFS_F(file));
+	kmem_cache_free(kmem_file_info_pool, SDCARDFS_F(file));
 	return 0;
 }
 
