@@ -419,6 +419,7 @@ setxattr(struct dentry *d, const char __user *name, const void __user *value,
 	int error;
 	void *kvalue = NULL;
 	char kname[XATTR_NAME_MAX + 1];
+
 	if (flags & ~(XATTR_CREATE|XATTR_REPLACE))
 		return -EINVAL;
 
