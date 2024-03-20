@@ -373,18 +373,6 @@ void kernfs_kill_sb(struct super_block *sb)
 	kfree(info);
 }
 
-/**
- * kernfs_pin_sb: try to pin the superblock associated with a kernfs_root
- * @kernfs_root: the kernfs_root in question
- * @ns: the namespace tag
- *
- * Pin the superblock so the superblock won't be destroyed in subsequent
- * operations.  This can be used to block ->kill_sb() which may be useful
- * for kernfs users which dynamically manage superblocks.
- *
- * Returns NULL if there's no superblock associated to this kernfs_root, or
- * -EINVAL if the superblock is being freed.
- */
 struct super_block *kernfs_pin_sb(struct kernfs_root *root, const void *ns)
 {
 	struct kernfs_super_info *info;
@@ -405,13 +393,7 @@ struct super_block *kernfs_pin_sb(struct kernfs_root *root, const void *ns)
 
 void __init kernfs_init(void)
 {
-
-	/*
-	 * the slab is freed in RCU context, so kernfs_find_and_get_node_by_ino
-	 * can access the slab lock free. This could introduce stale nodes,
-	 * please see how kernfs_find_and_get_node_by_ino filters out stale
-	 * nodes.
-	 */
+	init_kernfs_file_pool();
 	kernfs_node_cache = kmem_cache_create("kernfs_node_cache",
 					      sizeof(struct kernfs_node),
 					      0,
