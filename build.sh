@@ -54,11 +54,11 @@ esac
 '
 
 #Select your model here (I set it to beyondx since i have one) so demand change it to yours
-MODEL=beyondx
-export MODEL=beyondx
-KERNEL_DEFCONFIG=exynos9820-beyondx_defconfig
+MODEL=beyond2lte
+export MODEL=beyond2lte
+KERNEL_DEFCONFIG=exynos9820-beyond2lte_defconfig
 SOC=9820
-BOARD=SRPSC04B011KU
+BOARD=SRPRI17C014KU
     
 FUNC_BUILD_KERNEL()
 {
